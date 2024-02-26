@@ -20,7 +20,13 @@ public class UrlController : ControllerBase
     public async Task<IActionResult> Add([FromBody] Url url)
     {
         if (url.OriginalUrl is null)
-            return BadRequest(new { message = "Original Url required" });
+            return BadRequest(new { message = "Original URL required." });
+
+        bool isUrlValid = Uri.TryCreate(url.OriginalUrl, UriKind.Absolute, out Uri? uriResult)
+            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+        if (!isUrlValid)
+            return BadRequest(new { message = "Invalid URL."});
 
         // TODO: Implement if url.UserId is null handling
 
