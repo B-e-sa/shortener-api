@@ -1,20 +1,26 @@
 using Microsoft.AspNetCore.SignalR;
+using Shortener.Models;
+using Shortener.Repositories.Models;
 
 namespace Shortener.Services
 {
     public class UrlService
     {
-        public string GetUrl()
+        private readonly IUrlRepository _urlRepository;
+
+        public UrlService(IUrlRepository urlRepository)
+        {
+            _urlRepository = urlRepository;
+        }
+
+        public async Task<Url> Add(Url url) => await _urlRepository.Add(url);
+
+        public string Find()
         {
             return "";
         }
 
-        public string CreateUrl()
-        {
-            return "";
-        }
-
-        public string DeleteUrl()
+        public string Delete()
         {
             return "";
         }
