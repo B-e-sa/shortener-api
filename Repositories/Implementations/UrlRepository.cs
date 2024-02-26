@@ -17,7 +17,7 @@ namespace Shortener.Repositories
         {
              _dbContext.Add(url);
             await _dbContext.SaveChangesAsync();
-            
+
             return url;
         }
 
