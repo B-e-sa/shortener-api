@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Shortener.Data;
 using Shortener.Models;
 using Shortener.Repositories.Models;
@@ -15,23 +16,27 @@ namespace Shortener.Repositories
 
         public async Task<Url> Add(Url url)
         {
-             _dbContext.Add(url);
+            _dbContext.Urls.Add(url);
             await _dbContext.SaveChangesAsync();
 
             return url;
         }
 
-        public Task<Url> Delete(string url)
+        public Task<Url?> Delete(string url)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Url> Find(string url)
+        public async Task<Url?> Find(string url)
         {
-            throw new NotImplementedException();
+            Url foundUrl = await _dbContext.Urls
+                .Where(u => u.ShortUrl == url)
+                .FirstAsync();
+
+            return foundUrl;
         }
 
-        public Task<Url> FindByUserId(Guid id)
+        public Task<Url?> FindByUserId(Guid id)
         {
             throw new NotImplementedException();
         }

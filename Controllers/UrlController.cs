@@ -26,7 +26,7 @@ public class UrlController : ControllerBase
             && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
         if (!isUrlValid)
-            return BadRequest(new { message = "Invalid URL."});
+            return BadRequest(new { message = "Invalid URL." });
 
         // TODO: Implement if url.UserId is null handling
 
@@ -42,14 +42,14 @@ public class UrlController : ControllerBase
     }
 
     [HttpGet("{url}")]
-    public IActionResult Find(string url)
+    public async Task<IActionResult> Find(string url)
     {
-        return Ok(
-                   new
-                   {
-                       url
-                   }
-               );
+        Url? foundUrl = await _urlService.Find(url);
+
+        if (foundUrl is null)
+            return NotFound(new { message = "Provided URL does not exists." });
+
+        return Redirect(foundUrl.OriginalUrl);
     }
 
     // TODO: Implement DELETE URL

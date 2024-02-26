@@ -19,7 +19,7 @@ namespace Shortener.Services
 
             Random random = new();
             for (int i = 0; i < 4; i++)
-            {
+            {   
                 int index = random.Next(0, chars.Length);
                 shortUrl += chars[index];
             }
@@ -31,9 +31,11 @@ namespace Shortener.Services
             return url;
         }
 
-        public string Find()
+        public async Task<Url?> Find(string url)
         {
-            return "";
+            Url? foundUrl = await _urlRepository.Find(url);
+
+            return foundUrl;
         }
 
         public string Delete()
