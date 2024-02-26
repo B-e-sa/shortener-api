@@ -13,9 +13,12 @@ namespace Shortener.Repositories
             _dbContext = dbContext;
         }
 
-        public Task<Url> Add(Url url)
+        public async Task<Url> Add(Url url)
         {
-            throw new NotImplementedException();
+             _dbContext.Add(url);
+            await _dbContext.SaveChangesAsync();
+            
+            return url;
         }
 
         public Task<Url> Delete(string url)
