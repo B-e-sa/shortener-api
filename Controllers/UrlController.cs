@@ -1,27 +1,33 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Shortener.Models;
+using Shortener.Services;
 namespace Shortener.Controllers;
 
 [ApiController]
 [Route("/")]
 public class UrlController : ControllerBase
 {
-    // TODO: Implement find url URL
-    [HttpGet("{url}")]
-    public IActionResult FindUrl(string url)
+    private readonly UrlService _urlService;
+
+    public UrlController(UrlService urlService)
     {
-        return Ok(
-            new
-            {
-                url
-            }
-        );
+        _urlService = urlService;
     }
 
     // TODO: Implement CREATE URL
     [HttpPost()]
-    public IActionResult CreateUrl([FromBody] string url)
+    public async Task<IActionResult> Add([FromBody] Url url)
     {
-        return Ok(
+        if (url.OriginalUrl is null)
+            return BadRequest(new { message = "Original Url required" });
+
+        // TODO: Implement if url.UserId is null handling
+
+        await _urlService.Add(url);
+
+        return Created(
+            nameof(url),
             new
             {
                 url
@@ -29,9 +35,20 @@ public class UrlController : ControllerBase
         );
     }
 
+    [HttpGet("{url}")]
+    public IActionResult Find(string url)
+    {
+        return Ok(
+                   new
+                   {
+                       url
+                   }
+               );
+    }
+
     // TODO: Implement DELETE URL
     [HttpDelete()]
-    public IActionResult DeleteUrl([FromBody] string url)
+    public IActionResult Delete([FromBody] string url)
     {
         return Ok(
             new
