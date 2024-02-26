@@ -21,7 +21,8 @@ builder.Services.AddScoped<IUrlRepository, UrlRepository>();
 builder.Services.AddDbContext<ShortenerDbContext>(x =>
     {
         x.UseSqlite(builder.Configuration.GetConnectionString("Database"));
-    }
+    },
+    ServiceLifetime.Scoped
 );
 
 var app = builder.Build();
