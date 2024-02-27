@@ -1,7 +1,4 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Shortener.Models;
 using Shortener.Services;
 namespace Shortener.Controllers;
@@ -19,70 +16,82 @@ public class UrlController : ControllerBase
 
     private static bool VerifyUrl(string url)
     {
-        bool isUrlValid = Uri.TryCreate(url, UriKind.Absolute, out Uri? uriResult)
+        return Uri.TryCreate(url, UriKind.Absolute, out Uri? uriResult)
             && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-
-        return isUrlValid;
     }
 
     [HttpPost()]
     public async Task<IActionResult> Add([FromBody] Url url)
     {
-        if (url.OriginalUrl is null)
-            return BadRequest(new { message = "Original URL required." });
-
-        bool isUrlValid = VerifyUrl(url.OriginalUrl);
-
-        if (!isUrlValid)
+        if (url.OriginalUrl is null || !VerifyUrl(url.OriginalUrl))
             return BadRequest(new { message = "Invalid URL." });
 
         // TODO: Implement if url.UserId is null handling
 
-        await _urlService.Add(url);
+        Url createdUrl = await _urlService.Add(url);
 
         return Created(
             nameof(url),
             new
             {
-                url
+                createdUrl
+            }
+        );
+    }
+
+    [HttpGet()]
+    public async Task<IActionResult> FindByShortUrl([FromBody] UrlDto urlDto)
+    {
+        // TODO: Implement error if URL is not valid
+        if (urlDto is null || !VerifyUrl(urlDto.Url))
+            return BadRequest(new { message = "Invalid URL." });
+
+        Url? foundUrl = await _urlService.FindByShortUrl(urlDto.Url);
+
+        if (foundUrl is null)
+            return NotFound(new { message = "URL does not exists." });
+
+        return Ok(
+            new
+            {
+                foundUrl
             }
         );
     }
 
     [HttpGet("{url}")]
-    public async Task<IActionResult> Find(string url)
+    public async Task<IActionResult> RedirectTo(string url)
     {
         Url? foundUrl = await _urlService.FindByShortUrl(url);
 
         if (foundUrl is null)
-            return NotFound(new { message = "Provided URL does not exists." });
+            return NotFound(new { message = "The URL does not exists." });
 
         return Redirect(foundUrl.OriginalUrl);
     }
 
     // TODO: Implement DELETE URL
     [HttpDelete()]
-    public async Task<IActionResult> Delete([FromBody] string id)
+    public async Task<IActionResult> Delete([FromBody] UrlDto urlDto)
     {
+        if (urlDto.Id is null)
+            return BadRequest(new { message = "Invalid Id." });
+
         Guid idToGuid;
 
         try
         {
-            idToGuid = Guid.Parse(id);
+            idToGuid = Guid.Parse(urlDto.Id);
         }
-        catch (ArgumentNullException)
+        catch (Exception)
         {
-            return BadRequest(new { message = "URL id cannot be null." });
-        }
-        catch (FormatException)
-        {
-            return BadRequest(new { message = "Malformed URL id." });
+            return BadRequest(new { message = "Provided id is not a valid Guid." });
         }
 
         Url? foundUrl = await _urlService.FindById(idToGuid);
 
         if (foundUrl is null)
-            return NotFound(new { message = "URL not found" });
+            return NotFound(new { message = "URL not found." });
 
         Url deletedUrl = await _urlService.Delete(foundUrl);
 
