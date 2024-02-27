@@ -27,7 +27,7 @@ namespace Shortener.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<Url?> Find(string url)
+        public async Task<Url?> FindByShortUrl(string url)
         {
             Url foundUrl = await _dbContext.Urls
                 .Where(u => u.ShortUrl == url)
