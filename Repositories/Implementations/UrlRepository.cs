@@ -22,21 +22,31 @@ namespace Shortener.Repositories
             return url;
         }
 
-        public Task<Url?> Delete(string url)
+        public async Task<Url> Delete(Url url)
         {
-            throw new NotImplementedException();
+            _dbContext.Urls.Remove(url);
+            await _dbContext.SaveChangesAsync();
+
+            return url;
         }
 
         public async Task<Url?> FindByShortUrl(string url)
         {
-            Url foundUrl = await _dbContext.Urls
+            Url? foundUrl = await _dbContext.Urls
                 .Where(u => u.ShortUrl == url)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
             return foundUrl;
         }
 
+        // TODO: Implement FindByUserId
         public Task<Url?> FindByUserId(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        // TODO: Implement find by ID
+        Task<Url?> IUrlRepository.FindById(Guid id)
         {
             throw new NotImplementedException();
         }
