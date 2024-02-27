@@ -33,7 +33,7 @@ namespace Shortener.Services
 
         public async Task<Url?> Find(string url)
         {
-            Url? foundUrl = await _urlRepository.Find(url);
+            Url? foundUrl = await _urlRepository.FindByShortUrl(url);
 
             return foundUrl;
         }
