@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Shortener.Models;
 using Shortener.Services;
 namespace Shortener.Controllers;
@@ -15,15 +17,21 @@ public class UrlController : ControllerBase
         _urlService = urlService;
     }
 
-    // TODO: Implement CREATE URL
+    private static bool VerifyUrl(string url)
+    {
+        bool isUrlValid = Uri.TryCreate(url, UriKind.Absolute, out Uri? uriResult)
+            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+        return isUrlValid;
+    }
+
     [HttpPost()]
     public async Task<IActionResult> Add([FromBody] Url url)
     {
         if (url.OriginalUrl is null)
             return BadRequest(new { message = "Original URL required." });
 
-        bool isUrlValid = Uri.TryCreate(url.OriginalUrl, UriKind.Absolute, out Uri? uriResult)
-            && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+        bool isUrlValid = VerifyUrl(url.OriginalUrl);
 
         if (!isUrlValid)
             return BadRequest(new { message = "Invalid URL." });
@@ -44,7 +52,7 @@ public class UrlController : ControllerBase
     [HttpGet("{url}")]
     public async Task<IActionResult> Find(string url)
     {
-        Url? foundUrl = await _urlService.Find(url);
+        Url? foundUrl = await _urlService.FindByShortUrl(url);
 
         if (foundUrl is null)
             return NotFound(new { message = "Provided URL does not exists." });
@@ -54,12 +62,34 @@ public class UrlController : ControllerBase
 
     // TODO: Implement DELETE URL
     [HttpDelete()]
-    public IActionResult Delete([FromBody] string url)
+    public async Task<IActionResult> Delete([FromBody] string id)
     {
+        Guid idToGuid;
+
+        try
+        {
+            idToGuid = Guid.Parse(id);
+        }
+        catch (ArgumentNullException)
+        {
+            return BadRequest(new { message = "URL id cannot be null." });
+        }
+        catch (FormatException)
+        {
+            return BadRequest(new { message = "Malformed URL id." });
+        }
+
+        Url? foundUrl = await _urlService.FindById(idToGuid);
+
+        if (foundUrl is null)
+            return NotFound(new { message = "URL not found" });
+
+        Url deletedUrl = await _urlService.Delete(foundUrl);
+
         return Ok(
             new
             {
-                url
+                deletedUrl
             }
         );
     }
