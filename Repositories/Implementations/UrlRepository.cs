@@ -32,11 +32,9 @@ namespace Shortener.Repositories
 
         public async Task<Url?> FindByShortUrl(string url)
         {
-            Url? foundUrl = await _dbContext.Urls
+            return await _dbContext.Urls
                 .Where(u => u.ShortUrl == url)
                 .FirstOrDefaultAsync();
-
-            return foundUrl;
         }
 
         // TODO: Implement FindByUserId
