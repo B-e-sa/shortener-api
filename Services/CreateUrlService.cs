@@ -3,16 +3,16 @@ using Shortener.Repositories.Models;
 
 namespace Shortener.Services
 {
-    public class UrlService
+    public class CreateUrlService
     {
         private readonly IUrlRepository _urlRepository;
 
-        public UrlService(IUrlRepository urlRepository)
+        public CreateUrlService(IUrlRepository urlRepository)
         {
             _urlRepository = urlRepository;
         }
 
-        public async Task<Url> Add(Url url)
+        public async Task<Url> Handle(Url url)
         {
             string shortUrl = "";
             string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -30,11 +30,5 @@ namespace Shortener.Services
 
             return createdUrl;
         }
-
-        public async Task<Url?> FindByShortUrl(string url) => await _urlRepository.FindByShortUrl(url);
-
-        public async Task<Url?> FindById(Guid id) => await _urlRepository.FindById(id);
-
-        public async Task<Url> Delete(Url url) => await _urlRepository.Delete(url);
     }
 }
