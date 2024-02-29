@@ -31,7 +31,14 @@ namespace Shortener.Controllers
 
             // TODO: Implement if url.UserId is null handling
 
-            Url createdUrl = await _createUrlService.Handle((Url)req);
+            Url newUrl = new()
+            {
+                // TODO: implement linked user
+                
+                OriginalUrl = req.OriginalUrl
+            };
+
+            Url createdUrl = await _createUrlService.Handle(newUrl);
 
             return Created(
                 nameof(req),
