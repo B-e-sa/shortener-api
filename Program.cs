@@ -10,14 +10,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 // SERVICES
-builder.Services.AddScoped<UrlService>();
+builder.Services.AddScoped<CreateUrlService>();
+builder.Services.AddScoped<DeleteUrlService>();
+builder.Services.AddScoped<FindUrlByIdService>();
+builder.Services.AddScoped<FindUrlByShortUrlService>();
 
 // REPOSITORIES
 builder.Services.AddScoped<IUrlRepository, UrlRepository>();
 
-// DB
+// DATABASE
 builder.Services.AddDbContext<ShortenerDbContext>(x =>
     {
         x.UseSqlite(builder.Configuration.GetConnectionString("Database"));
