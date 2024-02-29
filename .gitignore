@@ -1,2 +1,7 @@
+# dotnet
 obj
 bin
+
+# db
+*.sqlite
+Migrations
