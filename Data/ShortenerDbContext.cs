@@ -1,5 +1,5 @@
-using Shortener.Models;
 using Microsoft.EntityFrameworkCore;
+using Shortener.Models;
 
 namespace Shortener.Data
 {
