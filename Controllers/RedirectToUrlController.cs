@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Shortener.Services;
 using Shortener.Models;
+using Shortener.Services;
 
 namespace Shortener.Controllers
 {

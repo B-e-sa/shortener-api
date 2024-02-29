@@ -1,7 +1,7 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Shortener.Models;
 using Shortener.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shortener.Controllers
 {
@@ -34,7 +34,7 @@ namespace Shortener.Controllers
             Url newUrl = new()
             {
                 // TODO: implement linked user
-                
+
                 OriginalUrl = req.OriginalUrl
             };
 

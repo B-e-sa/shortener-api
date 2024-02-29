@@ -1,8 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using Shortener.Controllers;
 
 namespace Shortener.Models
 {
@@ -12,9 +11,8 @@ namespace Shortener.Models
     {
         public Guid Id { get; set; }
 
-        [Column("short_url")]
-        [MaxLength(4)]
-        [MinLength(4)]
+        [Column("short_url", TypeName = "VARCHAR")]
+        [StringLength(4, MinimumLength = 4)]
         [Required]
         public string ShortUrl { get; set; } = string.Empty;
 

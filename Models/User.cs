@@ -1,7 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
+
+// TODO: map with db properties
 namespace Shortener.Models
 {
     [Table("users")]
@@ -10,8 +12,7 @@ namespace Shortener.Models
     {
         public Guid Id { get; set; }
 
-        [MaxLength(24)]
-        [MinLength(4)]
+        [StringLength(24, MinimumLength = 4)]
         [Required]
         public string Username { get; set; } = string.Empty;
 
