@@ -24,6 +24,8 @@ namespace Shortener.Services
                 shortUrl += chars[index];
             }
 
+            // TODO: implement linked user
+
             url.ShortUrl = shortUrl;
 
             Url createdUrl = await _urlRepository.Add(url);

@@ -1,9 +1,16 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Shortener.Models;
 using Shortener.Services;
 
 namespace Shortener.Controllers
 {
+    public class DeleteUrlRequest 
+    {
+        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        public string Id { get; set; }
+    }
+
     [ApiController]
     [Route("/")]
     public class DeleteUrlController : ControllerBase
@@ -21,12 +28,12 @@ namespace Shortener.Controllers
         }
 
         [HttpDelete()]
-        public async Task<IActionResult> Handle([FromBody] UrlDto urlDto)
+        public async Task<IActionResult> Handle([FromBody] DeleteUrlRequest req)
         {
-            if (urlDto.Id is null)
+            if (req.Id is null)
                 return BadRequest(new { message = "Invalid Id." });
 
-            Url? foundUrl = await _findUrlByIdService.Handle(Guid.Parse(urlDto.Id));
+            Url? foundUrl = await _findUrlByIdService.Handle(Guid.Parse(req.Id));
 
             if (foundUrl is null)
                 return NotFound(new { message = "URL not found." });

@@ -43,10 +43,11 @@ namespace Shortener.Repositories
             throw new NotImplementedException();
         }
 
-        // TODO: Implement find by ID
-        Task<Url?> IUrlRepository.FindById(Guid id)
+        public async Task<Url?> FindById(Guid id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Urls
+                .Where(u => u.Id == id)
+                .FirstOrDefaultAsync();
         }
     }
 }

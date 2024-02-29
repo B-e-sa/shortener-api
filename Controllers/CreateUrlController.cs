@@ -5,6 +5,13 @@ using Shortener.Services;
 
 namespace Shortener.Controllers
 {
+    public class CreateUrlRequest
+    {
+        [Required]
+        [Url]
+        public string OriginalUrl { get; set; }
+    }
+
     [ApiController]
     [Route("/")]
     public class CreateUrlController : ControllerBase
@@ -17,17 +24,17 @@ namespace Shortener.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> Handle([FromBody] Url url)
+        public async Task<IActionResult> Handle([FromBody] CreateUrlRequest req)
         {
-            if (url.OriginalUrl is null)
+            if (req.OriginalUrl is null)
                 return BadRequest(new { message = "Invalid URL." });
 
             // TODO: Implement if url.UserId is null handling
 
-            Url createdUrl = await _createUrlService.Handle(url);
+            Url createdUrl = await _createUrlService.Handle((Url)req);
 
             return Created(
-                nameof(url),
+                nameof(req),
                 new
                 {
                     createdUrl
