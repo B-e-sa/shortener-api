@@ -8,7 +8,7 @@ namespace Shortener.Controllers
     public class FindUrlByIdRequest
     {
         [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
     }
 
     [ApiController]

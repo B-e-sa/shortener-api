@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Shortener.Controllers;
 
 namespace Shortener.Models
 {
@@ -12,19 +13,20 @@ namespace Shortener.Models
         public Guid Id { get; set; }
 
         [Column("short_url")]
-        [StringLength(4, MinimumLength = 4)]
+        [MaxLength(4)]
+        [MinLength(4)]
         [Required]
-        public string? ShortUrl { get; set; }
+        public string ShortUrl { get; set; } = string.Empty;
 
         [Column("original_url")]
         [Required]
         [Url]
-        public string OriginalUrl { get; set; }
+        public string OriginalUrl { get; set; } = string.Empty;
 
         [DefaultValue(0)]
         public int Visits { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("created_at")]
         public DateTime CreatedAt { get; set; }
     }
 }

@@ -1,0 +1,5 @@
+// TODO:
+1 Create user entity                               [x]
+  1.1 Implement many-to-one relationship with url  [ ]
+
+2 Supress non nullable errors

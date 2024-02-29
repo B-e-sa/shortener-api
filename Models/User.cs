@@ -13,11 +13,11 @@ namespace Shortener.Models
         [MaxLength(24)]
         [MinLength(4)]
         [Required]
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [EmailAddress]
-        // TODO: Maybe implement [Required]
-        public string Email { get; set; }
+        [Required]
+        public string Email { get; set; } = string.Empty;
 
         /*
           * Minimum eight characters
@@ -33,7 +33,6 @@ namespace Shortener.Models
         public string Password { get; set; }
 
         [Column("created_at")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }
 
         [Column("updated_at")]

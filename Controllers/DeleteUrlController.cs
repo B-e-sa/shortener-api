@@ -5,10 +5,10 @@ using Shortener.Services;
 
 namespace Shortener.Controllers
 {
-    public class DeleteUrlRequest 
+    public class DeleteUrlRequest
     {
         [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
     }
 
     [ApiController]
@@ -16,7 +16,7 @@ namespace Shortener.Controllers
     public class DeleteUrlController : ControllerBase
     {
         private readonly DeleteUrlService _deleteUrlService;
-         private readonly FindUrlByIdService _findUrlByIdService;
+        private readonly FindUrlByIdService _findUrlByIdService;
 
         public DeleteUrlController(
             DeleteUrlService deleteUrlService,

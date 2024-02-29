@@ -9,7 +9,7 @@ namespace Shortener.Controllers
     {
         [Required]
         [Url]
-        public string OriginalUrl { get; set; }
+        public string OriginalUrl { get; set; } = string.Empty;
     }
 
     [ApiController]

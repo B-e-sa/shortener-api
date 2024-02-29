@@ -1,17 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Shortener.Services;
 using Shortener.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace Shortener.Controllers
 {
-    public class RedirectToUrlRequest
-    {
-        [MaxLength(4)]
-        [MinLength(4)]
-        public string Url { get; set; }
-    }
-
     [ApiController]
     [Route("/")]
     public class RedirectToUrlController : ControllerBase
@@ -24,9 +16,12 @@ namespace Shortener.Controllers
         }
 
         [HttpGet("{url}")]
-        public async Task<IActionResult> Handle(RedirectToUrlRequest req)
+        public async Task<IActionResult> Handle(string url)
         {
-            Url? foundUrl = await _findUrlByShortUrlService.Handle(req.Url);
+            if (url.Length > 4 || url.Length < 4)
+                return BadRequest(new { message = "Invalid Url." });
+
+            Url? foundUrl = await _findUrlByShortUrlService.Handle(url);
 
             if (foundUrl is null)
                 return NotFound(new { message = "The URL does not exists." });

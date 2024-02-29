@@ -27,6 +27,7 @@ namespace Shortener.Services
             // TODO: implement linked user
 
             url.ShortUrl = shortUrl;
+            url.CreatedAt = DateTime.Now;
 
             Url createdUrl = await _urlRepository.Add(url);
 
