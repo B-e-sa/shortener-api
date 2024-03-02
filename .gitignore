@@ -5,3 +5,8 @@ bin
 # db
 *.sqlite
 Migrations
+
+# ide
+.vs
+.github
+Shortener.csproj.user
