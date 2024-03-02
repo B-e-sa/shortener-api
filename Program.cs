@@ -2,19 +2,25 @@ using Microsoft.EntityFrameworkCore;
 using Shortener.Data;
 using Shortener.Repositories;
 using Shortener.Repositories.Models;
-using Shortener.Services;
+using Shortener.Services.Implementations;
+using Shortener.Services.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.SuppressMapClientErrors = true;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // SERVICES
-builder.Services.AddScoped<CreateUrlService>();
-builder.Services.AddScoped<DeleteUrlService>();
-builder.Services.AddScoped<FindUrlByIdService>();
-builder.Services.AddScoped<FindUrlByShortUrlService>();
+builder.Services.AddScoped<ICreateUrlService, CreateUrlService>();
+builder.Services.AddScoped<IDeleteUrlService, DeleteUrlService>();
+builder.Services.AddScoped<IFindUrlByIdService, FindUrlByIdService>();
+builder.Services.AddScoped<IFindUrlByShortUrlService, FindUrlByShortUrlService>();
 
 // REPOSITORIES
 builder.Services.AddScoped<IUrlRepository, UrlRepository>();
