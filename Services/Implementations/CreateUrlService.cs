@@ -1,9 +1,10 @@
 using Shortener.Models;
 using Shortener.Repositories.Models;
+using Shortener.Services.Models;
 
-namespace Shortener.Services
+namespace Shortener.Services.Implentations
 {
-    public class CreateUrlService
+    public class CreateUrlService : ICreateUrlService
     {
         private readonly IUrlRepository _urlRepository;
 

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Shortener.Models;
-using Shortener.Services;
+using Shortener.Services.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shortener.Controllers
@@ -16,9 +16,9 @@ namespace Shortener.Controllers
     [Route("/")]
     public class CreateUrlController : ControllerBase
     {
-        private readonly CreateUrlService _createUrlService;
+        private readonly ICreateUrlService _createUrlService;
 
-        public CreateUrlController(CreateUrlService createUrlService)
+        public CreateUrlController(ICreateUrlService createUrlService)
         {
             _createUrlService = createUrlService;
         }

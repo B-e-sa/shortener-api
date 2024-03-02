@@ -1,9 +1,10 @@
 using Shortener.Models;
 using Shortener.Repositories.Models;
+using Shortener.Services.Models;
 
-namespace Shortener.Services
+namespace Shortener.Services.Implentations
 {
-    public class FindUrlByIdService
+    public class FindUrlByIdService : IFindUrlByIdService
     {
         private readonly IUrlRepository _urlRepository;
 

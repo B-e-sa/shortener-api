@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Shortener.Models;
-using Shortener.Services;
+using Shortener.Services.Models;
 
 namespace Shortener.Controllers
 {
@@ -8,9 +8,9 @@ namespace Shortener.Controllers
     [Route("/")]
     public class RedirectToUrlController : ControllerBase
     {
-        private readonly FindUrlByShortUrlService _findUrlByShortUrlService;
+        private readonly IFindUrlByShortUrlService _findUrlByShortUrlService;
 
-        public RedirectToUrlController(FindUrlByShortUrlService findUrlByShortUrlService)
+        public RedirectToUrlController(IFindUrlByShortUrlService findUrlByShortUrlService)
         {
             _findUrlByShortUrlService = findUrlByShortUrlService;
         }

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Shortener.Models;
-using Shortener.Services;
+using Shortener.Services.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shortener.Controllers
@@ -15,12 +15,12 @@ namespace Shortener.Controllers
     [Route("/")]
     public class DeleteUrlController : ControllerBase
     {
-        private readonly DeleteUrlService _deleteUrlService;
-        private readonly FindUrlByIdService _findUrlByIdService;
+        private readonly IDeleteUrlService _deleteUrlService;
+        private readonly IFindUrlByIdService _findUrlByIdService;
 
         public DeleteUrlController(
-            DeleteUrlService deleteUrlService,
-            FindUrlByIdService findUrlByIdService
+            IDeleteUrlService deleteUrlService,
+            IFindUrlByIdService findUrlByIdService
         )
         {
             _deleteUrlService = deleteUrlService;

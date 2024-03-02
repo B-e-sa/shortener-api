@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Shortener.Models;
-using Shortener.Services;
+using Shortener.Services.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shortener.Controllers
@@ -15,9 +15,9 @@ namespace Shortener.Controllers
     [Route("/")]
     public class FindUrlByIdController : ControllerBase
     {
-        private readonly FindUrlByIdService _findUrlByIdService;
+        private readonly IFindUrlByIdService _findUrlByIdService;
 
-        public FindUrlByIdController(FindUrlByIdService findUrlByIdService)
+        public FindUrlByIdController(IFindUrlByIdService findUrlByIdService)
         {
             _findUrlByIdService = findUrlByIdService;
         }

@@ -1,9 +1,10 @@
 using Shortener.Models;
 using Shortener.Repositories.Models;
+using Shortener.Services.Models;
 
-namespace Shortener.Services
+namespace Shortener.Services.Implentations
 {
-    public class DeleteUrlService
+    public class DeleteUrlService : IDeleteUrlService
     {
         private readonly IUrlRepository _urlRepository;
 
