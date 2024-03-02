@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Shortener.Controllers.ResponseHandlers;
+using Shortener.Controllers.ResponseHandlers.ErrorHandlers;
+using Shortener.Controllers.ResponseHandlers.SuccessHandlers;
 using Shortener.Models;
 using Shortener.Services.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace Shortener.Controllers
 {
@@ -30,22 +34,19 @@ namespace Shortener.Controllers
         [HttpDelete()]
         public async Task<IActionResult> Handle([FromBody] DeleteUrlRequest req)
         {
-            if (req.Id is null)
-                return BadRequest(new { message = "Invalid Id." });
-
             Url? foundUrl = await _findUrlByIdService.Handle(Guid.Parse(req.Id));
 
             if (foundUrl is null)
-                return NotFound(new { message = "URL not found." });
+                return NotFound(
+                    new NotFoundHandler()
+                    {
+                        Message = "Searched URL not found."
+                    }
+                );
 
             Url deletedUrl = await _deleteUrlService.Handle(foundUrl);
 
-            return Ok(
-                new
-                {
-                    deletedUrl
-                }
-            );
+            return Ok(new SuccessHandler(deletedUrl));
         }
     }
 }

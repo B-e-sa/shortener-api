@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Shortener.Controllers.ResponseHandlers.SuccessHandlers;
 using Shortener.Models;
 using Shortener.Services.Models;
 using System.ComponentModel.DataAnnotations;
@@ -25,20 +26,17 @@ namespace Shortener.Controllers
         [HttpGet("url")]
         public async Task<IActionResult> Handle([FromBody] FindUrlByIdRequest req)
         {
-            if (req.Id is null)
-                return BadRequest(new { message = "Invalid id." });
-
             Url? foundUrl = await _findUrlByIdService.Handle(Guid.Parse(req.Id));
 
             if (foundUrl is null)
-                return NotFound(new { message = "Url not found." });
+                return NotFound(
+                    new 
+                    { 
+                        Message = "Searched URL not found." 
+                    }
+                );
 
-            return Ok(
-                new
-                {
-                    foundUrl
-                }
-            );
+            return Ok(new SuccessHandler(foundUrl));
         }
     }
 }
