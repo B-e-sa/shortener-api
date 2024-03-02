@@ -1,11 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Shortener.Controllers.ResponseHandlers;
 using Shortener.Controllers.ResponseHandlers.ErrorHandlers;
 using Shortener.Controllers.ResponseHandlers.SuccessHandlers;
 using Shortener.Models;
 using Shortener.Services.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Net;
 
 namespace Shortener.Controllers
 {

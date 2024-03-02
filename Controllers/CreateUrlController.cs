@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Shortener.Controllers.ResponseHandlers.SuccessHandlers;
 using Shortener.Models;
