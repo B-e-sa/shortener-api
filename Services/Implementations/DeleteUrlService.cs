@@ -2,7 +2,7 @@ using Shortener.Models;
 using Shortener.Repositories.Models;
 using Shortener.Services.Models;
 
-namespace Shortener.Services.Implentations
+namespace Shortener.Services.Implementations
 {
     public class DeleteUrlService : IDeleteUrlService
     {
