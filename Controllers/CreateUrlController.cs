@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Shortener.Controllers.ResponseHandlers.ErrorHandlers;
 using Shortener.Controllers.ResponseHandlers.SuccessHandlers;
 using Shortener.Models;
 using Shortener.Services.Models;
@@ -27,6 +29,14 @@ namespace Shortener.Controllers
         [HttpPost()]
         public async Task<IActionResult> Handle([FromBody] CreateUrlRequest req)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(
+                    new BadRequestHandler()
+                        {
+                            Message = "Invalid URL."
+                        }
+                );
+
             // TODO: Implement if url.UserId is null handling
 
             Url newUrl = new()
