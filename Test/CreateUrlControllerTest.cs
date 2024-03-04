@@ -9,29 +9,45 @@ using Xunit;
 
 namespace Shortener.Tests.Controllers
 {
-    public class CreateUrlControllerTests
+    public class CreateUrlControllerTests : IDisposable
     {
+        private readonly CreateUrlController _sut;
+        private readonly Mock<ICreateUrlService> _mockCreateUrlService;
+
+        public CreateUrlControllerTests()
+        {
+            _mockCreateUrlService = new Mock<ICreateUrlService>();
+
+            _sut = new CreateUrlController(
+                _mockCreateUrlService.Object
+            );
+        }
+
+        public void Dispose()
+        {
+            _mockCreateUrlService.Reset();
+            GC.SuppressFinalize(this);
+        }
+
         [Fact]
         public async Task Handle_ValidUrl_ReturnsCreated()
         {
             // Arrange
             var dummyUrl = Faker.Internet.Url();
-            var mockCreateUrlService = new Mock<ICreateUrlService>();
             var createdUrl = new Url
             {
                 OriginalUrl = dummyUrl,
                 ShortUrl = "abcd"
             };
 
-            mockCreateUrlService
+            _mockCreateUrlService
                 .Setup(x => x.Handle(It.IsAny<Url>()))
                 .ReturnsAsync(createdUrl);
 
             var request = new CreateUrlRequest { OriginalUrl = dummyUrl };
-            var controller = new CreateUrlController(mockCreateUrlService.Object);
 
             // Act
-            var result = await controller.Handle(request);
+            var result = await _sut.Handle(request);
 
             // Assert
             var createdResult = Assert.IsType<CreatedResult>(result);
@@ -45,13 +61,11 @@ namespace Shortener.Tests.Controllers
             // Arrange
             var invalidUrl = Faker.Lorem.Sentence();
             var request = new CreateUrlRequest { OriginalUrl = invalidUrl };
-            var createUrlServiceMock = new Mock<ICreateUrlService>();
 
-            var controller = new CreateUrlController(createUrlServiceMock.Object);
-            controller.ModelState.AddModelError("OriginalUrl", "Bad request error");
+            _sut.ModelState.AddModelError("OriginalUrl", "Bad request error");
 
             // Act
-            var result = await controller.Handle(request);
+            var result = await _sut.Handle(request);
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
