@@ -71,5 +71,31 @@ namespace Shortener.Test
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
             Assert.IsType<NotFoundHandler>(notFoundResult.Value);
         }
+
+        [Fact]
+        public async Task Handle_InvalidId_ReturnsBadRequest()
+        {
+            // Arrange
+            var mockDeleteUrlService = new Mock<IDeleteUrlService>();
+            var mockFindUrlByIdService = new Mock<IFindUrlByIdService>();
+            var invalidId = Faker.Lorem.Sentence();
+
+            var request = new DeleteUrlRequest { Id = invalidId };
+            var deleteUrlController = new DeleteUrlController(
+                mockDeleteUrlService.Object,
+                mockFindUrlByIdService.Object
+            );
+
+            deleteUrlController
+                .ModelState
+                .AddModelError("OriginalUrl", "Bad request error");
+
+            // Act
+            var result = await deleteUrlController.Handle(request);
+
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<BadRequestHandler>(badRequestObjectResult.Value);
+        }
     }
 }
