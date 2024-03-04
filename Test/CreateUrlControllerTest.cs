@@ -54,7 +54,8 @@ namespace Shortener.Tests.Controllers
             var result = await controller.Handle(request);
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsType<BadRequestHandler>(badRequestResult.Value);
         }
 
         // TODO: implement case if user.id is not present
