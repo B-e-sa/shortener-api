@@ -2,4 +2,6 @@
 1 Create user entity                               [x]
   1.1 Implement many-to-one relationship with url  [ ]
 
-2 Supress non nullable errors
+2 Suppress non nullable errors                     [x]
+
+3 Create disposable tests (if possible)            [ ]
