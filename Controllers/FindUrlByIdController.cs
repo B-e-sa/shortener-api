@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Shortener.Controllers.ResponseHandlers.ErrorHandlers;
 using Shortener.Controllers.ResponseHandlers.SuccessHandlers;
 using Shortener.Models;
 using Shortener.Services.Models;
@@ -8,7 +10,9 @@ namespace Shortener.Controllers
 {
     public class FindUrlByIdRequest
     {
-        [RegularExpression(@"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$")]
+        [RegularExpression(
+            @"(?im)^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$"
+        )]
         public string Id { get; set; } = string.Empty;
     }
 
@@ -26,11 +30,19 @@ namespace Shortener.Controllers
         [HttpGet("url")]
         public async Task<IActionResult> Handle([FromBody] FindUrlByIdRequest req)
         {
+            if(!ModelState.IsValid)
+                return BadRequest(
+                    new BadRequestHandler()
+                    {
+                        Message = "Invalid url id."
+                    }
+                );
+           
             Url? foundUrl = await _findUrlByIdService.Handle(Guid.Parse(req.Id));
 
             if (foundUrl is null)
                 return NotFound(
-                    new 
+                    new NotFoundHandler()
                     { 
                         Message = "Searched URL not found." 
                     }
