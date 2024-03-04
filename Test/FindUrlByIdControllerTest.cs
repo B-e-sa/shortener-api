@@ -59,7 +59,7 @@ namespace Shortener.Test
 
             _findUrlByIdService
                 .Setup(x => x.Handle(urlId))
-                .ReturnsAsync((Url)null!);
+                .ReturnsAsync((Url?)null);
 
             var request = new FindUrlByIdRequest { Id = urlId.ToString() };
 

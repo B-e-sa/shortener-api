@@ -59,7 +59,7 @@ namespace Shortener.Test
             var deletedHandlerResult = Assert.IsType<SuccessHandler>(
                 deletedResult.Value
             );
-            
+
             Assert.IsType<Url>(deletedHandlerResult.Value);
         }
 
@@ -71,7 +71,7 @@ namespace Shortener.Test
 
             _mockFindUrlByIdService
                 .Setup(x => x.Handle(urlId))
-                .ReturnsAsync((Url)null!);
+                .ReturnsAsync((Url?)null);
 
             var request = new DeleteUrlRequest { Id = urlId.ToString() };
 
