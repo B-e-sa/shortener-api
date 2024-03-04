@@ -75,13 +75,13 @@ namespace Shortener.Test
         public async Task Handle_InvalidUrl_ReturnsBadRequest()
         {
             // Arrange
-            var urlId = Faker.Lorem.Sentence();
+            var invalidId = Faker.Lorem.Sentence();
 
             _sut
                 .ModelState
                 .AddModelError("Id", "Bad request error");
 
-            var request = new FindUrlByIdRequest { Id = urlId };
+            var request = new FindUrlByIdRequest { Id = invalidId };
 
             // Act
             var result = await _sut.Handle(request);

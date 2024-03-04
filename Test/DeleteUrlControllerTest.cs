@@ -55,12 +55,16 @@ namespace Shortener.Test
 
             // Assert
             var deletedResult = Assert.IsType<OkObjectResult>(result);
-            var deletedHandlerResult = Assert.IsType<SuccessHandler>(deletedResult.Value);
+
+            var deletedHandlerResult = Assert.IsType<SuccessHandler>(
+                deletedResult.Value
+            );
+            
             Assert.IsType<Url>(deletedHandlerResult.Value);
         }
 
         [Fact]
-        public async Task Handle_InexistentUrl_ReturnsNotFoundAsync()
+        public async Task Handle_InexistentUrl_ReturnsNotFound()
         {
             // Arrange
             var urlId = Guid.NewGuid();
@@ -85,11 +89,11 @@ namespace Shortener.Test
             // Arrange
             var invalidId = Faker.Lorem.Sentence();
 
-            var request = new DeleteUrlRequest { Id = invalidId };
-
             _sut
                 .ModelState
-                .AddModelError("OriginalUrl", "Bad request error");
+                .AddModelError("Id", "Bad request error");
+
+            var request = new DeleteUrlRequest { Id = invalidId };
 
             // Act
             var result = await _sut.Handle(request);

@@ -30,7 +30,7 @@ namespace Shortener.Tests.Controllers
         }
 
         [Fact]
-        public async Task Handle_ValidUrl_ReturnsCreated()
+        public async Task Handle_ValidUrl_ReturnsCreatedUrl()
         {
             // Arrange
             var dummyUrl = Faker.Internet.Url();
@@ -51,7 +51,11 @@ namespace Shortener.Tests.Controllers
 
             // Assert
             var createdResult = Assert.IsType<CreatedResult>(result);
-            var createdHandlerResult = Assert.IsType<CreatedHandler>(createdResult.Value);
+
+            var createdHandlerResult = Assert.IsType<CreatedHandler>(
+                createdResult.Value
+            );
+
             Assert.IsType<Url>(createdHandlerResult.Value);
         }
 
