@@ -32,6 +32,15 @@ namespace Shortener.Controllers
         [HttpDelete()]
         public async Task<IActionResult> Handle([FromBody] DeleteUrlRequest req)
         {
+            // TODO: implement model validation
+            if(!ModelState.IsValid)
+                return BadRequest(
+                    new BadRequestHandler()
+                    {
+                        Message = "Invalid URL id."
+                    }
+                );
+
             Url? foundUrl = await _findUrlByIdService.Handle(Guid.Parse(req.Id));
 
             if (foundUrl is null)
