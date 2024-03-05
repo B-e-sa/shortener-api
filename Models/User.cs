@@ -20,17 +20,6 @@ namespace Shortener.Models
         [Required]
         public string Email { get; set; } = string.Empty;
 
-        /*
-          * Minimum eight characters
-          * At least one uppercase letter
-          * At least one uppercase letter
-          * One lowercase letter
-          * One number and
-          * One special character
-        */
-        [RegularExpression(
-            @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-        )]
         public string Password { get; set; } = string.Empty;
 
         [Column("created_at")]
