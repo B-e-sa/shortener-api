@@ -1,6 +1,7 @@
 # dotnet
 obj
 bin
+appsettings.json
 
 # db
 *.sqlite
